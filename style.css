@@ -8,6 +8,11 @@ body{
     flex-direction: column;
 }
 
+.main p{
+    align-self: center;
+    font-size: larger;
+}
+
 .header{
     margin: 30px 0 30px 20px;
     border: 1px solid black;
@@ -31,7 +36,9 @@ body{
     height: 33.333%;
     width: 33.333%;  
     border-radius: 0;
-    box-shadow: none;  
+    box-shadow: none; 
+    background-color: #dd9983; 
+    border: 1px solid #696254;
 }
 
 button:hover{
