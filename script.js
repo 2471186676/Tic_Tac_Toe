@@ -2,12 +2,14 @@
 const ttt = (() =>{
     /* 0 = empty, 1 = X, 2 = O */
     let field = [0,0,0,0,0,0,0,0,0];
+    let turn = 0;
 
-    const reset = () =>{field = [0,0,0,0,0,0,0,0,0]; updateUI();}
+    const reset = () =>{field = [0,0,0,0,0,0,0,0,0]; updateUI(); ttt.turn = 0;}
     const get = (i) => {return field[i];}
     const changeField = (loc, to) => {
         if(field[loc] == 0){
             field[loc] = Number(to);
+            ttt.turn += 1;
         }
     }
 
@@ -53,8 +55,7 @@ const ttt = (() =>{
 
     }
 
-
-    return {changeField, check, reset, get};
+    return {changeField, check, reset, get, turn};
 })()
 
 const player = (name) => {
@@ -77,6 +78,8 @@ buttons.forEach((button) =>{
 /* algorithms */
 function game_cycle(button){   
     let gameTurn = document.getElementById("turn"); 
+    let playerPoint = document.getElementById("player");
+    let AIPoint = document.getElementById("AI");
     let id = button.id;
     ttt.changeField(id, turn);
 
@@ -89,8 +92,19 @@ function game_cycle(button){
             gameTurn.innerHTML = "X turn";
         }
     }else{
+        if (turn == 1) {
+            playerPoint.innerHTML++;
+            gameTurn.innerHTML = "You win this round";
+        }else{
+            AIPoint.innerHTML++;
+            gameTurn.innerHTML = "AI win this one"
+        }
+        ttt.reset();
+    }
+    console.log(ttt.turn);
+    if(ttt.turn == 9){
         /* stop game */
-        
+        ttt.reset();
     }
     updateUI();
 }
