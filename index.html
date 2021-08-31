@@ -9,18 +9,18 @@
     <main>
         <div class="main">
             <div class="header">
-                <h>Tic_Tac_Tao</h>
+                <h>Tic_Tac_Toe</h>
             </div>
 
             <span>
-                <span>you</span>
+                <span id="P1">P1</span>
                 <span style="margin-right: 50px;" id="player">0</span>
                 <span> VS </span>
                 <span style="margin-left: 50px;" id="AI">0</span>
-                <span>AI</span>
+                <span id="P2">P2</span>
             </span>
 
-            <span id="turn">You are X, you go first</span>
+            <span id="turn">X go first</span>
 
             <div class="game"> 
                 <button class="field" id="0"> </button>
@@ -36,10 +36,12 @@
 
             <div class="action">
                 <button class="reset" onclick="ttt.reset()"> reset </button>
+                <button class="reset" onclick="findBestMove()">notbestmove</button>
             </div>
         </div>
 
     </main>
 
+    <script src="tttAI.js"></script>
     <script src="script.js"></script>
 </html>

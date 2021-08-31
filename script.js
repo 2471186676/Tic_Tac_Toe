@@ -4,7 +4,13 @@ const ttt = (() =>{
     let field = [0,0,0,0,0,0,0,0,0];
     let turn = 0;
 
-    const reset = () =>{field = [0,0,0,0,0,0,0,0,0]; updateUI(); ttt.turn = 0;}
+    const reset = () =>{
+        for(let i = 0; i < field.length; i++){
+            field[i] = 0;
+        }
+        updateUI(); 
+        ttt.turn = 0;
+    }
     const get = (i) => {return field[i];}
     const changeField = (loc, to) => {
         if(field[loc] == 0){
@@ -50,12 +56,11 @@ const ttt = (() =>{
                 won = true;
            }
 
-           console.log(won);
            return won;
 
     }
 
-    return {changeField, check, reset, get, turn};
+    return {changeField, check, reset, get, turn, field};
 })()
 
 const player = (name) => {
@@ -67,7 +72,7 @@ const player = (name) => {
 
 /* add event listener for game button*/
 let turn = 1;
-let AI = player("AI", 0, 0), friendly = player("player",0,0);
+let AI = player("P1", 0, 0), friendly = player("P2",0,0);
 let buttons = document.querySelectorAll(".game button");
 buttons.forEach((button) =>{
     button.addEventListener('click', event => {
@@ -94,17 +99,17 @@ function game_cycle(button){
     }else{
         if (turn == 1) {
             playerPoint.innerHTML++;
-            gameTurn.innerHTML = "You win this round";
+            gameTurn.innerHTML = "X win this round";
         }else{
             AIPoint.innerHTML++;
-            gameTurn.innerHTML = "AI win this one"
+            gameTurn.innerHTML = "O win this one"
         }
         ttt.reset();
     }
-    console.log(ttt.turn);
     if(ttt.turn == 9){
         /* stop game */
         ttt.reset();
+        gameTurn.innerHTML="Draw";
     }
     updateUI();
 }
@@ -125,4 +130,45 @@ function updateUI(){
         }
         i++;
     })
+}
+
+function findBestMove(){
+
+    /* 
+        I relize I screw up when i wrote this,
+        I used a global turn order instead of the one inside ttt construct
+        too much work to change it now
+    */
+
+    let gameTurn = document.getElementById("turn"); 
+    let playerPoint = document.getElementById("player");
+    let AIPoint = document.getElementById("AI");
+
+    console.log(ttt.field);
+
+    ttt.changeField(bestmove(ttt.field),turn);
+    updateUI();
+    if(!ttt.check(turn)){
+        if(turn == 1){
+            turn = 2;
+            gameTurn.innerHTML = "O turn";
+        }else{
+            turn = 1;
+            gameTurn.innerHTML = "X turn";
+        }
+    }else{
+        if (turn == 1) {
+            playerPoint.innerHTML++;
+            gameTurn.innerHTML = "X win this round";
+        }else{
+            AIPoint.innerHTML++;
+            gameTurn.innerHTML = "O win this one"
+        }
+        ttt.reset();
+    }
+    if(ttt.turn == 9){
+        /* stop game */
+        ttt.reset();
+        gameTurn.innerHTML="Draw";
+    }
 }
